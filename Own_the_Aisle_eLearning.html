@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Own the Aisle: Help Every Customer Finish the Project | eLearning Concept by Naya Roquemore</title>
+<style>
+:root{
+  --orange:#F96302; --orange-d:#C94F00; --orange-l:#FFF1E8; --orange-m:#FFD9BF;
+  --ink:#1E1E1E; --ink2:#4A4A4A; --muted:#737373; --line:#E6E2DE; --bg:#FAF8F6; --card:#FFFFFF;
+  --good:#1E7F4F; --good-l:#E6F4EC; --bad:#B42318; --bad-l:#FDECEA; --warn:#A15C00;
+  --blue:#2F6FB8; --chart-o:#E85A00;
+  --r:14px; --sh:0 2px 10px rgba(0,0,0,.06);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+button{font:inherit;cursor:pointer}
+h1,h2,h3,h4{line-height:1.2;margin:0 0 .5em}
+p{margin:0 0 .8em}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+/* top bar */
+.topbar{background:var(--ink);color:#fff;position:sticky;top:0;z-index:50}
+.topbar .wrap{display:flex;align-items:center;gap:16px;min-height:60px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px}
+.brand .sq{width:30px;height:30px;border-radius:7px;background:var(--orange);display:grid;place-items:center;color:#fff;font-size:15px}
+.tabs{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+.tab{background:transparent;border:0;color:#ddd;padding:9px 13px;border-radius:9px;font-weight:600;font-size:14px}
+.tab:hover{background:#333;color:#fff}
+.tab[aria-selected="true"]{background:var(--orange);color:#fff}
+.pts{background:#333;border-radius:20px;padding:5px 12px;font-size:13px;font-weight:700}
+.pts b{color:#FFB37F}
+
+section.view{display:none;padding:28px 0 60px}
+section.view.on{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:22px}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,1fr)} .g5{grid-template-columns:repeat(5,1fr)} .g3{grid-template-columns:repeat(3,1fr)} .g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:1000px){.g5{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:820px){.g2,.g3,.g4,.g5{grid-template-columns:1fr}}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:var(--orange-d)}
+.lead{font-size:18px;color:var(--ink2)}
+.btn{background:var(--orange);color:#fff;border:0;border-radius:10px;padding:12px 20px;font-weight:700;font-size:15px;transition:transform .1s,background .2s}
+.btn:hover{background:var(--orange-d)} .btn:active{transform:scale(.97)}
+.btn.ghost{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
+.btn.ghost:hover{border-color:var(--orange);color:var(--orange-d)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700;background:var(--orange-l);color:var(--orange-d)}
+.note{font-size:12.5px;color:var(--muted)}
+.tag-illus{display:inline-flex;gap:6px;align-items:center;background:#FFF7E0;border:1px solid #F2D27A;color:#6B4E00;border-radius:8px;padding:6px 10px;font-size:12.5px;font-weight:600}
+
+/* hero */
+.hero{background:linear-gradient(135deg,var(--orange) 0%,#FF8A3D 100%);color:#fff;border-radius:22px;padding:36px;position:relative;overflow:hidden}
+.hero h1{font-size:44px;font-weight:900;letter-spacing:-.5px;margin-bottom:.25em}
+.hero p{font-size:18px;max-width:560px;opacity:.95}
+.hero .chars{position:absolute;right:24px;bottom:0;display:flex;align-items:flex-end;gap:4px}
+.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 24px}
+.hero .meta span{background:rgba(255,255,255,.2);border-radius:20px;padding:5px 12px;font-size:13px;font-weight:600}
+.hero .btn{background:#fff;color:var(--orange-d)} .hero .btn:hover{background:var(--ink);color:#fff}
+@media(max-width:820px){.hero .chars{position:static;justify-content:center;margin-top:16px}.hero h1{font-size:32px}}
+.stripes{position:absolute;inset:0;background:repeating-linear-gradient(-45deg,rgba(255,255,255,.06) 0 14px,transparent 14px 28px);pointer-events:none}
+
+/* SAM */
+.sam{display:grid;grid-template-columns:1fr 1.6fr 1.6fr;gap:14px;margin:18px 0}
+@media(max-width:820px){.sam{grid-template-columns:1fr}}
+.phase{border-radius:16px;padding:18px;border:2px solid var(--line);background:#fff;cursor:pointer;transition:.2s;text-align:left;width:100%}
+.phase:hover,.phase.sel{border-color:var(--orange);box-shadow:0 6px 18px rgba(249,99,2,.15)}
+.phase h3{font-size:17px}
+.phase .wk{font-size:12px;font-weight:700;color:var(--muted)}
+.loop{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:12px;flex-wrap:wrap}
+.loop span{background:var(--orange-l);color:var(--orange-d);border-radius:8px;padding:5px 9px;font-size:12.5px;font-weight:700}
+.loop i{font-style:normal;color:var(--orange);font-weight:900}
+.detail{background:#fff;border-left:5px solid var(--orange);border-radius:12px;padding:20px;box-shadow:var(--sh)}
+.detail ul{margin:.3em 0 0;padding-left:20px} .detail li{margin:.3em 0}
+table.t{width:100%;border-collapse:collapse;font-size:14px}
+table.t th,table.t td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+table.t th{background:#F3F0ED;font-size:12.5px;text-transform:uppercase;letter-spacing:.6px;color:var(--ink2)}
+
+/* course player */
+.player{display:grid;grid-template-columns:240px 1fr;gap:18px}
+@media(max-width:820px){.player{grid-template-columns:1fr}#tocList{display:none}.topbar{position:static}.slide{padding:18px}.cert{padding:18px}.cert .nm{min-width:0}}
+.player>*{min-width:0}
+.toc{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:12px;height:max-content;position:sticky;top:76px}
+@media(max-width:820px){.toc{position:static}}
+.toc button{display:flex;width:100%;gap:10px;align-items:center;background:none;border:0;padding:10px;border-radius:9px;text-align:left;font-size:14px;color:var(--ink2);font-weight:600}
+.toc button:hover{background:var(--orange-l)}
+.toc button.cur{background:var(--orange);color:#fff}
+.toc .dot{width:22px;height:22px;border-radius:50%;border:2px solid currentColor;display:grid;place-items:center;font-size:11px;flex:none}
+.toc button.done .dot{background:var(--good);border-color:var(--good);color:#fff}
+.toc button.cur.done .dot{background:#fff;color:var(--good);border-color:#fff}
+.prog{height:8px;background:var(--line);border-radius:8px;overflow:hidden;margin:6px 4px 12px}
+.prog i{display:block;height:100%;background:var(--orange);width:0;transition:width .4s}
+.slide{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:26px;min-height:480px;display:flex;flex-direction:column}
+.slide .body{flex:1}
+.slide .foot{display:flex;justify-content:space-between;align-items:center;margin-top:20px;gap:10px;flex-wrap:wrap}
+.coach{display:flex;gap:14px;align-items:flex-start;background:var(--orange-l);border-radius:14px;padding:14px;margin:12px 0}
+.coach .bubble{background:#fff;border-radius:12px;padding:12px 14px;position:relative;flex:1;font-size:15px}
+.coach .bubble b{color:var(--orange-d)}
+
+/* compare */
+.cmp{border-radius:14px;padding:16px;border:2px solid var(--line);cursor:pointer;background:#fff;text-align:left;width:100%}
+.cmp:hover{border-color:var(--orange)}
+.chat{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.msg{padding:9px 12px;border-radius:12px;font-size:14px;max-width:90%}
+.msg.a{background:var(--orange-l);align-self:flex-start}
+.msg.c{background:#EEF2F7;align-self:flex-end}
+.reveal{display:none;margin-top:10px;padding:10px 12px;border-radius:10px;font-size:14px;font-weight:600}
+.cmp.open .reveal{display:block}
+
+/* flip cards */
+.flip{perspective:900px;height:230px;cursor:pointer;background:none;border:0;padding:0;width:100%}
+.flip .in{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.flip.on .in{transform:rotateY(180deg)}
+.flip .f,.flip .b{position:absolute;inset:0;border-radius:16px;backface-visibility:hidden;padding:18px;display:flex;flex-direction:column;justify-content:center;text-align:left}
+.flip .f{background:var(--orange);color:#fff}
+.flip .f .big{font-size:48px;font-weight:900;line-height:1}
+.flip .f h3{font-size:24px;margin:.2em 0}
+.flip .b{background:#fff;border:2px solid var(--orange);transform:rotateY(180deg);font-size:14px;color:var(--ink)}
+.flip .b b{color:var(--orange-d)}
+
+/* sort game */
+.qcard{font-size:20px;font-weight:700;text-align:center;padding:30px 20px;border:2px dashed var(--orange);border-radius:16px;background:var(--orange-l);margin:14px 0}
+.sortbtns{display:flex;gap:12px;justify-content:center}
+.sortbtns .btn{min-width:150px}
+.fb{margin-top:12px;padding:12px 14px;border-radius:10px;font-weight:600;display:none}
+.fb.ok{display:block;background:var(--good-l);color:var(--good)}
+.fb.no{display:block;background:var(--bad-l);color:var(--bad)}
+.timer{height:6px;background:var(--line);border-radius:6px;overflow:hidden}
+.timer i{display:block;height:100%;background:var(--orange);width:100%}
+
+/* cart game */
+.shelf{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+@media(max-width:820px){.shelf{grid-template-columns:repeat(2,1fr)}}
+.item{background:#fff;border:2px solid var(--line);border-radius:14px;padding:12px 8px;text-align:center;font-size:13px;font-weight:600;transition:.15s}
+.item:hover{border-color:var(--orange);transform:translateY(-2px)}
+.item .ic{font-size:30px;display:block;margin-bottom:4px}
+.item.in{border-color:var(--orange);background:var(--orange-l)}
+.item.right{border-color:var(--good);background:var(--good-l)}
+.item.wrong{border-color:var(--bad);background:var(--bad-l)}
+.item.missed{border-style:dashed;border-color:var(--warn)}
+.cartbar{display:flex;align-items:center;gap:12px;background:var(--ink);color:#fff;border-radius:12px;padding:10px 14px;margin:14px 0;flex-wrap:wrap}
+
+/* scenario */
+.scene{background:linear-gradient(#FFF7F1,#fff);border-radius:16px;padding:16px;border:1px solid var(--line)}
+.stage{display:flex;justify-content:space-between;align-items:flex-end;min-height:150px;padding:0 10px;border-bottom:6px solid #D9CFC6;margin-bottom:12px;position:relative}
+.stage .shelfbg{position:absolute;left:30%;right:30%;bottom:0;height:120px;background:repeating-linear-gradient(#E9E2DB 0 6px,#fff 6px 38px);border-radius:6px 6px 0 0;opacity:.8}
+.say{background:#fff;border:2px solid var(--line);border-radius:14px;padding:12px 14px;font-size:15px;margin-bottom:12px}
+.say .who{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+.opts{display:grid;gap:10px}
+.opt{text-align:left;background:#fff;border:2px solid var(--line);border-radius:12px;padding:12px 14px;font-size:15px;transition:.15s}
+.opt:hover{border-color:var(--orange);background:var(--orange-l)}
+.meter{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700}
+.meter .bar{flex:1;height:12px;background:var(--line);border-radius:12px;overflow:hidden}
+.meter .bar i{display:block;height:100%;width:50%;background:linear-gradient(90deg,#F2A65A,var(--orange));transition:width .5s}
+
+/* quiz */
+.qopt{display:block;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:12px;padding:12px 14px;margin:8px 0;font-size:15px}
+.qopt:hover{border-color:var(--orange)}
+.qopt.sel{border-color:var(--orange);background:var(--orange-l)}
+.qopt.right{border-color:var(--good);background:var(--good-l)}
+.qopt.wrong{border-color:var(--bad);background:var(--bad-l)}
+
+/* cert & job aid */
+.cert{border:10px solid var(--orange);border-radius:18px;padding:30px;text-align:center;background:#fff;position:relative}
+.cert h2{font-size:30px}
+.cert .nm{font-size:28px;font-weight:800;color:var(--orange-d);border-bottom:2px solid var(--line);display:inline-block;padding:0 20px 4px;min-width:260px}
+.badge{width:96px;height:96px;margin:0 auto 10px}
+.jobaid{border:2px solid var(--ink);border-radius:14px;overflow:hidden;max-width:420px}
+.jobaid .h{background:var(--orange);color:#fff;padding:12px 16px;font-weight:800}
+.jobaid ol{margin:0;padding:14px 16px 14px 34px;font-size:14px}
+.jobaid li{margin:6px 0}
+
+/* eval */
+.stars{display:flex;gap:4px}
+.stars button{background:none;border:0;font-size:26px;color:#D4CCC5;padding:0 2px;line-height:1}
+.stars button.on{color:var(--orange)}
+.qrow{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+textarea,input[type=text]{width:100%;font:inherit;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px}
+textarea:focus,input:focus{outline:2px solid var(--orange);border-color:var(--orange)}
+.chk{display:flex;gap:10px;align-items:flex-start;padding:10px;border-radius:10px;cursor:pointer}
+.chk:hover{background:var(--orange-l)}
+.chk input{width:20px;height:20px;accent-color:var(--orange);margin-top:2px}
+.kp{border-radius:14px;padding:16px;background:#fff;border:1px solid var(--line);border-top:5px solid var(--orange)}
+.kp .lv{font-size:12px;font-weight:800;color:var(--orange-d);letter-spacing:1px}
+
+/* dashboard */
+.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px}
+.stat .k{font-size:13px;color:var(--ink2);font-weight:600}
+.stat .v{font-size:28px;white-space:nowrap;font-weight:800;letter-spacing:-.5px;margin:4px 0}
+.stat .d{font-size:13px;color:var(--good);font-weight:700}
+.chartbox{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;position:relative}
+.legend{display:flex;gap:16px;font-size:13px;color:var(--ink2);margin:4px 0 8px;flex-wrap:wrap}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:#fff;font-size:12.5px;padding:7px 10px;border-radius:8px;opacity:0;transition:opacity .12s;white-space:nowrap;z-index:5}
+svg text{font-family:inherit}
+.tview{margin-top:10px;font-size:13px}
+.tview summary{cursor:pointer;color:var(--ink2);font-weight:600}
+
+/* confidence + AI coach + blended */
+.conf{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.conf button{flex:1;min-width:90px;background:#fff;border:2px solid var(--line);border-radius:12px;padding:10px 6px;font-weight:700;font-size:14px}
+.conf button small{display:block;font-weight:500;color:var(--muted);font-size:11.5px}
+.conf button:hover{border-color:var(--orange)} .conf button.sel{border-color:var(--orange);background:var(--orange-l)}
+.aichat{background:#F6F4F2;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px;min-height:120px}
+.ai-row{display:flex;gap:10px;align-items:flex-end}
+.ai-row.me{justify-content:flex-end}
+.ai-b{background:#fff;border-radius:14px;padding:10px 13px;max-width:78%;font-size:15px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.ai-row.me .ai-b{background:var(--orange);color:#fff}
+.ai-b.coachb{background:#1E1E1E;color:#fff;max-width:92%}
+.ai-b.coachb .crit{display:flex;gap:8px;margin:4px 0;font-size:14px}
+.ai-b.coachb .model{margin-top:8px;background:#333;border-radius:10px;padding:8px 10px;font-size:13.5px}
+.typing span{display:inline-block;width:7px;height:7px;border-radius:50%;background:#fff;margin:0 2px;animation:bl 1s infinite}
+.typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
+@keyframes bl{0%,100%{opacity:.25}50%{opacity:1}}
+.ai-in{display:flex;gap:10px;margin-top:10px;align-items:flex-end}
+.ai-in textarea{flex:1}
+.bl{border-radius:16px;padding:18px;background:#fff;border:1px solid var(--line);position:relative}
+.bl .n{position:absolute;top:-12px;left:16px;background:var(--orange);color:#fff;font-weight:800;border-radius:20px;padding:2px 10px;font-size:13px}
+.bl .fmt{font-size:12px;font-weight:800;letter-spacing:1px;color:var(--orange-d);text-transform:uppercase;margin-top:6px}
+details.agenda{margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+details.agenda summary{cursor:pointer;font-weight:700}
+footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-size:12.5px;text-align:center;background:#fff}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:99}
+.toast{position:fixed;left:50%;top:72px;transform:translateX(-50%) translateY(-140px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;font-weight:700;transition:transform .3s;z-index:100;opacity:0}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+@media print{
+  body *{visibility:hidden}
+  #printArea,#printArea *{visibility:visible}
+  #printArea{position:absolute;left:0;top:0}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand"><div class="sq">&#9670;</div>Own the Aisle</div>
+    <nav class="tabs" role="tablist">
+      <button class="tab" role="tab" data-v="home" aria-selected="true">Overview</button>
+      <button class="tab" role="tab" data-v="sam">1 · SAM Design Plan</button>
+      <button class="tab" role="tab" data-v="course">2 · eLearning Course</button>
+      <button class="tab" role="tab" data-v="eval">3 · Evaluation</button>
+      <button class="tab" role="tab" data-v="results">4 · Results</button>
+    </nav>
+    <div class="pts">&#9733; <b id="ptsVal">0</b> pts</div>
+  </div>
+</header>
+
+<!-- ================= OVERVIEW ================= -->
+<section class="view on" id="v-home">
+  <div class="wrap">
+    <div class="hero">
+      <div class="stripes"></div>
+      <div class="eyebrow" style="color:#fff;opacity:.85">Store Associate Learning · Customer Experience</div>
+      <h1>Own the Aisle</h1>
+      <p>Help every customer finish the project. A 15-minute, mobile-friendly eLearning that teaches store associates to turn "Where's the stain?" into a finished deck.</p>
+      <div class="meta"><span>&#9201; 15 min</span><span>&#128241; Mobile-first</span><span>&#127918; Branching scenario + 2 games</span><span>&#129302; AI practice coach</span><span>&#128101; Blended: ILT + VILT + job aid</span><span>&#9989; Kirkpatrick L1–L4</span></div>
+      <button class="btn" onclick="go('course')">Start the course &rarr;</button>
+      <div class="chars" id="heroChars"></div>
+    </div>
+
+    <div class="grid g3" style="margin-top:18px">
+      <div class="card"><div class="eyebrow">The performance need</div><h3>Associates answer the question. Customers need the whole project.</h3><p class="note">Customers often leave with one item and come back for the rest, or don't come back. Associates are friendly but stop at "It's in aisle 24."</p></div>
+      <div class="card"><div class="eyebrow">The learner</div><h3>Frontline, on the floor, short on time</h3><p class="note">New and tenured associates across departments. Learns on a store device or phone between customers, so every screen is short, visual, and tap-friendly.</p></div>
+      <div class="card"><div class="eyebrow">The business result</div><h3>More complete projects, more confident associates</h3><p class="note">Measured by customer survey "found help" scores, items per project basket, and supervisor observations at 30 days.</p></div>
+    </div>
+
+    <div class="card" style="margin-top:18px">
+      <div class="eyebrow">Learning objectives</div>
+      <h3>After this course, associates will be able to:</h3>
+      <div class="grid g4" style="margin-top:10px">
+        <div><span class="pill">Approach</span><p style="margin-top:8px">Greet customers within 10 feet with an open, friendly opener.</p></div>
+        <div><span class="pill">Ask</span><p style="margin-top:8px">Use at least 2 open questions to uncover the full project.</p></div>
+        <div><span class="pill">Advise</span><p style="margin-top:8px">Recommend a complete project list, including prep items and tools.</p></div>
+        <div><span class="pill">Assist</span><p style="margin-top:8px">Walk the customer to the product and offer a helpful service.</p></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:18px">
+      <div class="eyebrow">How to review this sample</div>
+      <div class="grid g4" style="margin-top:10px">
+        <button class="btn ghost" onclick="go('sam')">1 · SAM design plan</button>
+        <button class="btn ghost" onclick="go('course')">2 · Take the course</button>
+        <button class="btn ghost" onclick="go('eval')">3 · Evaluation tools</button>
+        <button class="btn ghost" onclick="go('results')">4 · Pilot results</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SAM ================= -->
+<section class="view" id="v-sam">
+  <div class="wrap">
+    <div class="eyebrow">Step 1 · How this course was built</div>
+    <h2 style="font-size:30px">Successive Approximation Model (SAM)</h2>
+    <p class="lead">Instead of building the whole course before anyone sees it, SAM uses fast, small rounds: design a little, prototype it, get feedback, repeat. Tap each phase to see what happened.</p>
+
+    <div class="sam">
+      <button class="phase sel" data-p="0"><div class="wk">Week 1</div><h3>&#9312; Preparation</h3><p class="note" style="margin:0">Savvy Start + background gathering</p></button>
+      <button class="phase" data-p="1"><div class="wk">Weeks 2–3</div><h3>&#9313; Iterative Design</h3><p class="note" style="margin:0">Three design rounds with stakeholders</p>
+        <div class="loop"><span>Design</span><i>&rarr;</i><span>Prototype</span><i>&rarr;</i><span>Review</span><i>&#8635;</i></div></button>
+      <button class="phase" data-p="2"><div class="wk">Weeks 4–6</div><h3>&#9314; Iterative Development</h3><p class="note" style="margin:0">Alpha &rarr; Beta pilot &rarr; Gold release</p>
+        <div class="loop"><span>Develop</span><i>&rarr;</i><span>Implement</span><i>&rarr;</i><span>Evaluate</span><i>&#8635;</i></div></button>
+    </div>
+    <div class="detail" id="samDetail"></div>
+
+    <h3 style="margin-top:28px">Project plan at a glance</h3>
+    <div class="card" style="padding:0;overflow:auto">
+      <table class="t">
+        <thead><tr><th>Milestone</th><th>Week</th><th>Who's involved</th><th>Output</th></tr></thead>
+        <tbody>
+          <tr><td><b>Savvy Start</b></td><td>1</td><td>Learning Strategy Sr. Manager, Store Manager, 2 Dept. Supervisors, 3 associates, Customer Experience SME</td><td>Action map, success metrics, 3 rough prototypes</td></tr>
+          <tr><td><b>Design rounds 1–3</b></td><td>2–3</td><td>Same team, plus associates as test learners</td><td>Approved design proof (Storyline/Rise)</td></tr>
+          <tr><td><b>Alpha</b></td><td>4</td><td>SMEs, Learning Strategy Sr. Manager</td><td>Full build, accuracy and brand review</td></tr>
+          <tr><td><b>Beta pilot</b></td><td>5</td><td>3 pilot stores, 60 associates, supervisors</td><td>Pilot data (L1 and L2) and fixes list</td></tr>
+          <tr><td><b>Gold launch</b></td><td>6</td><td>LMS team, field leaders</td><td>LMS release, job aid, supervisor guide</td></tr>
+          <tr><td><b>30/60-day check</b></td><td>10–14</td><td>Supervisors, Learning team</td><td>L3 observations and L4 business review</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="margin-top:28px">The blended solution: more than one course</h3>
+    <p>The Savvy Start showed that a single course wouldn't change floor behavior on its own. Associates work different shifts, learn best by practicing, and need help in the moment. So the eLearning sits inside a 4-part blended path.</p>
+    <div class="grid g4" style="margin-top:18px">
+      <div class="bl"><span class="n">1</span><div class="fmt">Instructor-led (ILT) · 10 min</div><h4 style="margin:6px 0">Pre-shift huddle</h4><p class="note" style="margin:0">Supervisors introduce the 4 A's with a quick role-play, using a ready-to-run huddle guide.</p></div>
+      <div class="bl"><span class="n">2</span><div class="fmt">eLearning · 15 min</div><h4 style="margin:6px 0">Own the Aisle course</h4><p class="note" style="margin:0">Mobile-first, self-paced. Games, AI practice coach, branching scenario and a knowledge check.</p></div>
+      <div class="bl"><span class="n">3</span><div class="fmt">Virtual (VILT) · 30 min</div><h4 style="margin:6px 0">Live practice lab</h4><p class="note" style="margin:0">Distance learning on Teams for associates across stores and shifts: breakout role-plays with peer feedback.</p></div>
+      <div class="bl"><span class="n">4</span><div class="fmt">Performance support · ongoing</div><h4 style="margin:6px 0">On the floor</h4><p class="note" style="margin:0">Pocket job aid, plus a supervisor observation checklist and coaching at 30 days.</p></div>
+    </div>
+    <details class="agenda"><summary>See the 10-minute huddle guide (instructor-led)</summary>
+      <table class="t" style="margin-top:10px"><thead><tr><th>Time</th><th>Supervisor does</th><th>Associates do</th></tr></thead><tbody>
+      <tr><td>0–2 min</td><td>Share one real customer comment: "I got directions, not help."</td><td>React: "Has this happened in our store?"</td></tr>
+      <tr><td>2–5 min</td><td>Introduce the 4 A's with the pocket job aid.</td><td>Each person reads one A out loud.</td></tr>
+      <tr><td>5–9 min</td><td>Model a 60-second deck-stain conversation.</td><td>Pairs practice using a different project card.</td></tr>
+      <tr><td>9–10 min</td><td>Assign the 15-min eLearning before next shift.</td><td>Scan the QR code to open it on their phone.</td></tr></tbody></table></details>
+    <details class="agenda"><summary>See the 30-minute virtual practice lab (VILT)</summary>
+      <table class="t" style="margin-top:10px"><thead><tr><th>Time</th><th>Activity</th><th>Tool</th></tr></thead><tbody>
+      <tr><td>0–5 min</td><td>Warm-up poll: "Which A is hardest for you?"</td><td>Teams poll</td></tr>
+      <tr><td>5–20 min</td><td>Breakout role-plays in 3s: associate, customer, observer (with the checklist)</td><td>Breakout rooms + project cards</td></tr>
+      <tr><td>20–27 min</td><td>Debrief: best open question heard, plus one thing to try</td><td>Whiteboard</td></tr>
+      <tr><td>27–30 min</td><td>Commitment: post one goal for your next shift</td><td>Chat</td></tr></tbody></table></details>
+
+    <h3 style="margin-top:28px">Where AI sped up the work</h3>
+    <div class="grid g3">
+      <div class="card"><div class="eyebrow">Learning analysis</div><p>Used generative AI (Copilot / ChatGPT) to sort customer survey comments into themes. SMEs then checked every theme before it shaped the design.</p></div>
+      <div class="card"><div class="eyebrow">Content development</div><p>Drafted scenario dialogue variations and distractor answers with AI. Every line was edited for tone and validated by the Customer Experience SME.</p></div>
+      <div class="card"><div class="eyebrow">Asset creation</div><p>Used AI to draft character art concepts and voiceover scripts, then finished them in Adobe Creative Cloud and Storyline. This cut build time compared with a fully manual build.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= COURSE ================= -->
+<section class="view" id="v-course">
+  <div class="wrap">
+    <div class="player">
+      <aside class="toc">
+        <div class="eyebrow" style="padding:4px 8px">Course progress</div>
+        <div class="prog"><i id="progBar"></i></div>
+        <div id="tocList"></div>
+      </aside>
+      <div class="slide" id="slide"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EVALUATION ================= -->
+<section class="view" id="v-eval">
+  <div class="wrap">
+    <div class="eyebrow">Step 3 · Proving it worked</div>
+    <h2 style="font-size:30px">Evaluation plan: Kirkpatrick's four levels</h2>
+    <p class="lead">Each level answers a different question, from "Did they like it?" to "Did the business get better?"</p>
+    <div class="grid g4">
+      <div class="kp"><div class="lv">LEVEL 1 · REACTION</div><h4>Did they find it useful?</h4><p class="note">5-question learner survey right after the course.</p></div>
+      <div class="kp"><div class="lv">LEVEL 2 · LEARNING</div><h4>Did they learn it?</h4><p class="note">Same 5-item knowledge check before and after, plus a confidence rating. Pass = 80%.</p></div>
+      <div class="kp"><div class="lv">LEVEL 3 · BEHAVIOR</div><h4>Do they do it on the floor?</h4><p class="note">Supervisor observation checklist at 30 days, 3 customer interactions each.</p></div>
+      <div class="kp"><div class="lv">LEVEL 4 · RESULTS</div><h4>Did the business improve?</h4><p class="note">Pilot vs. comparison stores: "found help" survey score, items per project basket.</p></div>
+    </div>
+
+    <div class="grid g2" style="margin-top:20px">
+      <div class="card">
+        <span class="pill">Level 1</span>
+        <h3 style="margin-top:8px">Learner feedback survey</h3>
+        <form id="survey" onsubmit="return submitSurvey(event)">
+          <div id="surveyQs"></div>
+          <div style="margin:12px 0 6px;font-weight:600">What's one thing you'll try on your next shift?</div>
+          <textarea id="sComment" rows="3" placeholder="Type your answer…"></textarea>
+          <div style="margin-top:12px"><button class="btn" type="submit">Submit feedback</button></div>
+          <div class="fb" id="surveyFb"></div>
+        </form>
+      </div>
+      <div class="card">
+        <span class="pill">Level 3</span>
+        <h3 style="margin-top:8px">Supervisor observation checklist</h3>
+        <p class="note">Used on the floor 30 days after training. Tap the behaviors you observed in one customer interaction.</p>
+        <div id="obsList"></div>
+        <div class="meter" style="margin-top:12px"><span>Behaviors observed</span><div class="bar"><i id="obsBar" style="width:0"></i></div><span id="obsPct">0%</span></div>
+        <p class="note" id="obsCoach" style="margin-top:10px"></p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <span class="pill">Level 2</span>
+      <h3 style="margin-top:8px">Knowledge check (pre and post)</h3>
+      <p>The same 5 scenario-based questions run at the start of the course (the &ldquo;Quick check&rdquo; baseline) and again at the end (Module 7). Learners also rate their confidence before and after, so we measure both <b>competent</b> and <b>confident</b>. Both gains appear on the Results tab.</p>
+      <button class="btn ghost" onclick="go('course');showKey('quiz')">Open the knowledge check &rarr;</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= RESULTS ================= -->
+<section class="view" id="v-results">
+  <div class="wrap">
+    <div class="eyebrow">Step 4 · Review of the data</div>
+    <h2 style="font-size:30px">Beta pilot results: 3 stores, 60 associates</h2>
+    <div class="tag-illus">&#9888; Illustrative sample data: shows the reporting approach. Replace with real pilot results.</div>
+    <p class="lead" style="margin-top:12px">The headline: associates went from <b>58% to 89%</b> on the knowledge check, their confidence rose from <b>2.9 to 4.4 out of 5</b>, and <b>81%</b> used all four steps on the floor 30 days later.</p>
+
+    <div class="grid g5" style="margin:16px 0">
+      <div class="stat"><div class="k">Completion rate</div><div class="v">96%</div><div class="d">58 of 60 associates</div></div>
+      <div class="stat"><div class="k">L1 · Avg. learner rating</div><div class="v">4.6/5</div><div class="d">"Useful on my next shift" 4.7</div></div>
+      <div class="stat"><div class="k">L2 · Knowledge check</div><div class="v">58% &rarr; 89%</div><div class="d">+31 pts pre to post</div></div>
+      <div class="stat"><div class="k">L2 · Confidence helping customers</div><div class="v">2.9 &rarr; 4.4</div><div class="d">out of 5, before vs. after</div></div>
+      <div class="stat"><div class="k">L3 · All 4 steps observed</div><div class="v">81%</div><div class="d">at 30 days, vs. 34% before</div></div>
+    </div>
+
+    <div class="grid g2">
+      <div class="chartbox" id="c1">
+        <h4 style="margin-bottom:2px">L2 · Knowledge check score by objective</h4>
+        <div class="note">% correct, before vs. after the course</div>
+        <div class="legend"><span><i style="background:var(--blue)"></i>Before</span><span><i style="background:var(--chart-o)"></i>After</span></div>
+        <svg id="chart1" viewBox="0 0 460 260" width="100%" role="img" aria-label="Knowledge check scores before and after by objective"></svg>
+        <div class="tip" id="tip1"></div>
+        <details class="tview"><summary>View as table</summary><table class="t" id="t1"></table></details>
+      </div>
+      <div class="chartbox" id="c2">
+        <h4 style="margin-bottom:2px">L1 · Learner survey ratings</h4>
+        <div class="note">Average rating out of 5 (n = 58)</div>
+        <svg id="chart2" viewBox="0 0 460 260" width="100%" role="img" aria-label="Learner survey average ratings"></svg>
+        <div class="tip" id="tip2"></div>
+        <details class="tview"><summary>View as table</summary><table class="t" id="t2"></table></details>
+      </div>
+    </div>
+
+    <h3 style="margin-top:24px">L4 · Business results at 60 days: pilot vs. comparison stores</h3>
+    <div class="card" style="padding:0;overflow:auto">
+      <table class="t">
+        <thead><tr><th>Measure</th><th>Pilot stores (trained)</th><th>Comparison stores</th><th>What it tells us</th></tr></thead>
+        <tbody>
+          <tr><td><b>Customer survey: "An associate helped me find what I needed"</b></td><td>+9 pts</td><td>+1 pt</td><td>Customers notice the difference</td></tr>
+          <tr><td><b>Items per project basket</b> (paint &amp; deck categories)</td><td>+12%</td><td>+2%</td><td>Customers leave with the full project</td></tr>
+          <tr><td><b>"Couldn't find help" survey comments</b></td><td>−31%</td><td>−4%</td><td>Fewer customers left on their own</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid g2" style="margin-top:20px">
+      <div class="card"><div class="eyebrow">What worked</div><ul style="padding-left:20px;margin:6px 0 0">
+        <li>The branching scenario was the top-rated part of the course in open comments.</li>
+        <li>"Ask" improved most, from 48% to 86%. Open questions were the biggest gap going in.</li>
+        <li>Supervisors used the pocket job aid for daily huddles without being asked.</li></ul></div>
+      <div class="card"><div class="eyebrow">Next iteration (SAM never stops)</div><ul style="padding-left:20px;margin:6px 0 0">
+        <li>Add department versions (Garden, Plumbing, Electrical) using the same 4 A's.</li>
+        <li>Add a 2-minute refresher at 30 days for the 19% not yet using all 4 steps.</li>
+        <li>Add supervisor coaching tips to the observation checklist.</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Portfolio work sample designed and built by <b>Naya Roquemore</b>, Instructional Designer.
+  Concept piece for an interview; not affiliated with, produced by, or endorsed by The Home Depot. Characters and illustrations are original. Results shown are illustrative.
+</footer>
+
+<div class="toast" id="toast"></div>
+<canvas class="confetti" id="confetti"></canvas>
+
+<script>
+/* ---------- characters (original) ---------- */
+const CH={
+ bolt:(s=110)=>`<svg width="${s}" height="${s}" viewBox="0 0 120 120" aria-label="Bolt, a cartoon toolbox coach">
+  <rect x="38" y="10" width="44" height="22" rx="8" fill="none" stroke="#3A3A3A" stroke-width="8"/>
+  <rect x="12" y="28" width="96" height="78" rx="14" fill="#3A3A3A"/>
+  <rect x="12" y="28" width="96" height="22" rx="10" fill="#F96302"/>
+  <rect x="52" y="44" width="16" height="10" rx="3" fill="#FFD9BF"/>
+  <circle cx="44" cy="74" r="12" fill="#fff"/><circle cx="76" cy="74" r="12" fill="#fff"/>
+  <circle cx="47" cy="76" r="5.5" fill="#1E1E1E"/><circle cx="79" cy="76" r="5.5" fill="#1E1E1E"/>
+  <circle cx="49" cy="74" r="1.8" fill="#fff"/><circle cx="81" cy="74" r="1.8" fill="#fff"/>
+  <path d="M48 93 Q60 102 72 93" stroke="#FFB37F" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <circle cx="30" cy="90" r="5" fill="#F96302" opacity=".5"/><circle cx="90" cy="90" r="5" fill="#F96302" opacity=".5"/></svg>`,
+ rosa:(s=120)=>`<svg width="${s*0.8}" height="${s}" viewBox="0 0 96 120" aria-label="Rosa, a store associate">
+  <circle cx="48" cy="18" r="11" fill="#2B1B12"/>
+  <circle cx="48" cy="34" r="20" fill="#8D5A3B"/>
+  <path d="M28 32 Q30 12 48 13 Q66 12 68 32 Q60 22 48 22 Q36 22 28 32Z" fill="#2B1B12"/>
+  <circle cx="41" cy="35" r="2.6" fill="#1E1E1E"/><circle cx="55" cy="35" r="2.6" fill="#1E1E1E"/>
+  <path d="M41 44 Q48 50 55 44" stroke="#5A2E1A" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <path d="M16 120 Q16 64 48 60 Q80 64 80 120Z" fill="#FFFFFF" stroke="#E6E2DE"/>
+  <path d="M30 120 L30 72 Q48 80 66 72 L66 120Z" fill="#F96302"/>
+  <rect x="38" y="88" width="20" height="14" rx="3" fill="#C94F00"/>
+  <rect x="58" y="76" width="7" height="9" rx="2" fill="#fff"/></svg>`,
+ dana:(s=120)=>`<svg width="${s*0.8}" height="${s}" viewBox="0 0 96 120" aria-label="Dana, a customer">
+  <circle cx="32" cy="30" r="12" fill="#4A2C1A"/><circle cx="64" cy="30" r="12" fill="#4A2C1A"/><circle cx="48" cy="20" r="14" fill="#4A2C1A"/>
+  <circle cx="48" cy="36" r="19" fill="#E2B48C"/>
+  <circle cx="41" cy="37" r="2.6" fill="#1E1E1E"/><circle cx="55" cy="37" r="2.6" fill="#1E1E1E"/>
+  <path d="M42 46 Q48 51 54 46" stroke="#8A4B2A" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <path d="M16 120 Q16 66 48 62 Q80 66 80 120Z" fill="#3F8F7A"/></svg>`,
+ marcus:(s=120)=>`<svg width="${s*0.8}" height="${s}" viewBox="0 0 96 120" aria-label="Marcus, a customer">
+  <circle cx="48" cy="36" r="20" fill="#C68B5E"/>
+  <path d="M27 30 Q28 12 48 12 Q68 12 69 30 Z" fill="#2F6FB8"/><rect x="60" y="26" width="20" height="6" rx="3" fill="#2F6FB8"/>
+  <path d="M30 40 Q32 58 48 58 Q64 58 66 40 Q60 50 48 50 Q36 50 30 40Z" fill="#3B2A20"/>
+  <circle cx="41" cy="36" r="2.6" fill="#1E1E1E"/><circle cx="55" cy="36" r="2.6" fill="#1E1E1E"/>
+  <path d="M16 120 Q16 66 48 62 Q80 66 80 120Z" fill="#7A8794"/>
+  <path d="M40 64 L48 76 L56 64" fill="none" stroke="#5E6A75" stroke-width="3"/></svg>`
+};
+document.getElementById('heroChars').innerHTML=CH.rosa(150)+CH.bolt(120)+CH.marcus(150);
+
+/* ---------- nav & points ---------- */
+let pts=0;
+function addPts(n,msg){pts=Math.max(0,pts+n);document.getElementById('ptsVal').textContent=pts;if(n>0)toast(`+${n} pts${msg?' · '+msg:''}`)}
+function toast(t){const el=document.getElementById('toast');el.textContent=t;el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),1600)}
+function go(v){document.querySelectorAll('.view').forEach(s=>s.classList.toggle('on',s.id==='v-'+v));
+ document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected',t.dataset.v===v));window.scrollTo({top:0,behavior:'smooth'});if(v==='results')drawCharts()}
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>go(t.dataset.v));
+
+/* ---------- SAM ---------- */
+const SAM=[
+ {h:'① Preparation: Savvy Start (Week 1)',b:`<p>A 1-day working session with the <b>Learning Strategy Sr. Manager</b>, a Store Manager, two Department Supervisors, three associates and a Customer Experience SME.</p>
+ <ul><li><b>Problem found:</b> survey comments showed customers "got an answer, not help." Associates knew products but stopped at directions to the aisle.</li>
+ <li><b>Action map:</b> the business goal (complete project baskets) mapped to 4 on-the-floor behaviors: Approach, Ask, Advise, Assist.</li>
+ <li><b>Not a training problem?</b> We checked. Staffing and signage were also flagged and handed to Operations; training targeted only the skill gap.</li>
+ <li><b>Output:</b> 3 sketch prototypes made in the room, plus agreed success metrics for all 4 Kirkpatrick levels.</li></ul>`},
+ {h:'② Iterative Design: 3 rounds (Weeks 2–3)',b:`<ul><li><b>Round 1 (paper prototype):</b> a text-heavy scenario. Associates said: "Too much reading. I'd do this on my phone on break."</li>
+ <li><b>Round 2 (Storyline click-through):</b> added the coach character and a branching conversation. SMEs asked for <i>real</i> product situations, so the deck re-stain project was chosen.</li>
+ <li><b>Round 3 (mobile-first Rise layout):</b> short screens, big tap targets, 2 games. Signed off as the <b>design proof</b>.</li>
+ <li>Each round took 2–3 days: <b>design → prototype → review</b>, then decide what to change.</li></ul>`},
+ {h:'③ Iterative Development: Alpha → Beta → Gold (Weeks 4–6)',b:`<ul><li><b>Alpha:</b> complete build in Articulate Storyline/Rise with Adobe Creative Cloud graphics. SME accuracy review and brand/compliance review. 14 fixes logged.</li>
+ <li><b>Beta:</b> piloted in 3 stores with 60 associates. Collected L1 survey and L2 pre/post data and fixed the 2 most-missed questions' wording.</li>
+ <li><b>Gold:</b> published to the LMS with a pocket job aid and a supervisor observation checklist for L3.</li>
+ <li>Results then feed the <b>next</b> SAM cycle (see Results tab).</li></ul>`}
+];
+function samShow(i){document.querySelectorAll('.phase').forEach(p=>p.classList.toggle('sel',+p.dataset.p===i));
+ document.getElementById('samDetail').innerHTML=`<h3>${SAM[i].h}</h3>${SAM[i].b}`}
+document.querySelectorAll('.phase').forEach(p=>p.onclick=()=>samShow(+p.dataset.p));samShow(0);
+
+/* ---------- COURSE ---------- */
+const KEYS=['welcome','pre','why','aaaa','sort','ai','cart','scen','quiz','cert'];
+const MODS=['Welcome','Quick check (before)','Why it matters','The 4 A\'s','Game: Open or Closed?','AI Practice Coach','Game: Build the cart','Scenario: Help Marcus','Knowledge check','Certificate & job aid'];
+function showKey(k){show(KEYS.indexOf(k))}
+const done=new Set();let cur=0;
+function toc(){document.getElementById('tocList').innerHTML=MODS.map((m,i)=>`<button class="${i===cur?'cur':''} ${done.has(i)?'done':''}" onclick="show(${i})"><span class="dot">${done.has(i)?'&#10003;':i+1}</span>${m}</button>`).join('');
+ document.getElementById('progBar').style.width=(done.size/MODS.length*100)+'%'}
+function complete(i){if(!done.has(i)){done.add(i);toc()}}
+function foot(i,nextOk=true){return `<div class="foot"><button class="btn ghost" ${i===0?'disabled':''} onclick="show(${i-1})">&larr; Back</button><span class="note">Screen ${i+1} of ${MODS.length}</span>${i<MODS.length-1?`<button class="btn" id="nextBtn" ${nextOk?'':'disabled'} onclick="complete(${i});show(${i+1})">Next &rarr;</button>`:'<span></span>'}</div>`}
+function coach(html,who='bolt'){return `<div class="coach">${CH[who](70)}<div class="bubble">${html}</div></div>`}
+function show(i){cur=i;toc();const s=document.getElementById('slide');const k=KEYS[i];s.innerHTML=R[k]();if(I[k])I[k]();s.scrollIntoView({behavior:'smooth',block:'start'})}
+const R={},I={};
+
+R.welcome=()=>`<div class="body"><div class="eyebrow">Welcome</div><h2 style="font-size:28px">Hey there, orange-blooded associate!</h2>
+ ${coach(`I'm <b>Bolt</b>, your toolbox coach. Customers don't come in to buy a can of stain. They come in to <b>finish a project</b>. In 15 minutes you'll learn 4 simple steps to help them do it, then practice with a real customer.`)}
+ <div class="grid g3" style="margin-top:8px">
+  <div class="card" style="padding:14px"><b>&#127919; Earn points</b><p class="note" style="margin:4px 0 0">Every smart choice earns points. Watch the top bar.</p></div>
+  <div class="card" style="padding:14px"><b>&#127918; Play 2 games</b><p class="note" style="margin:4px 0 0">Sort questions, then build a customer's cart.</p></div>
+  <div class="card" style="padding:14px"><b>&#127941; Get certified</b><p class="note" style="margin:4px 0 0">Score 80%+ to earn your Aisle Ace badge.</p></div>
+ </div></div>${foot(cur)}`;
+
+R.why=()=>`<div class="body"><div class="eyebrow">Module 1 · Why it matters</div><h2>Same customer. Two associates. Tap each to see what happened.</h2>
+ <div class="grid g2" style="margin-top:10px">
+  <button class="cmp" onclick="this.classList.add('open');cmpSeen(0)"><b>Associate A</b>
+   <div class="chat"><div class="msg c">"Where's your deck stain?"</div><div class="msg a">"Aisle 24, on the left!"</div></div>
+   <div class="reveal" style="background:var(--bad-l);color:var(--bad)">Marcus bought stain, but no cleaner, no applicator and no tape. The stain peeled in a month, and he blamed the product.</div></button>
+  <button class="cmp" onclick="this.classList.add('open');cmpSeen(1)"><b>Associate B</b>
+   <div class="chat"><div class="msg c">"Where's your deck stain?"</div><div class="msg a">"Happy to show you! What are you working on?"</div><div class="msg c">"Re-staining my deck."</div><div class="msg a">"Nice. How's the wood looking right now?"</div></div>
+   <div class="reveal" style="background:var(--good-l);color:var(--good)">Marcus left with everything for the job and a finished deck he's proud of. He'll come back for his next project.</div></button>
+ </div>
+ ${coach(`The difference? Associate B helped with the <b>project</b>, not just the product. That's what <b>Own the Aisle</b> is all about.`)}
+ </div>${foot(cur,false)}`;
+let seen=new Set();function cmpSeen(i){seen.add(i);if(seen.size===2){document.getElementById('nextBtn').disabled=false;if(!done.has(cur))addPts(10,'Nice comparing!')}}
+
+const AS=[['A','Approach','Within 10 feet, make eye contact and greet.','<b>Say:</b> "Hi! What project are you working on today?"<br><br><b>Avoid:</b> waiting for the customer to ask. Most won\'t.'],
+ ['A','Ask','Use 2+ open questions to learn the whole project.','<b>Say:</b> "How big is the space?" "What does it look like right now?"<br><br><b>Avoid:</b> yes/no questions like "Need anything else?"'],
+ ['A','Advise','Recommend everything needed to finish the job.','<b>Think:</b> Prep &rarr; Product &rarr; Tools &rarr; Protection.<br><br><b>Say:</b> "To make this stain last, you\'ll want a deck cleaner first."'],
+ ['A','Assist','Walk them there and offer a helpful service.','<b>Do:</b> walk, don\'t point. Offer a tool rental, delivery or a project checklist.<br><br><b>Close:</b> "Thanks for shopping with us, enjoy the deck!"']];
+R.aaaa=()=>`<div class="body"><div class="eyebrow">Module 2 · The 4 A's</div><h2>Tap each card to flip it</h2>
+ <div class="grid g4" style="margin-top:10px">${AS.map((a,i)=>`<button class="flip" onclick="flip(this,${i})"><div class="in"><div class="f"><div class="big">${i+1}</div><h3>${a[1]}</h3><div style="opacity:.92">${a[2]}</div></div><div class="b"><b>${a[1]}</b><p style="margin-top:6px">${a[3]}</p></div></div></button>`).join('')}</div>
+ ${coach(`Easy way to remember it: <b>Approach, Ask, Advise, Assist.</b> Flip all 4 to keep going.`)}</div>${foot(cur,false)}`;
+let flipped=new Set();function flip(el,i){el.classList.toggle('on');flipped.add(i);if(flipped.size===4){document.getElementById('nextBtn').disabled=false;if(!done.has(cur))addPts(10,'All 4 A\'s!')}}
+
+const SQ=[["How big is your deck?",'open'],["Do you need anything else?",'closed'],["What does the wood look like right now?",'open'],["Is this for outside?",'closed'],["What's the project you're tackling?",'open'],["Did you find everything okay?",'closed']];
+let sq=0,sqScore=0,sqTimer=null;
+R.sort=()=>{sq=0;sqScore=0;return `<div class="body"><div class="eyebrow">Module 3 · Game: Ask</div><h2>Open or Closed? Sort the questions</h2>
+ <p>Open questions get customers talking about their project. Closed questions get a "yes" or "no." You have 8 seconds per question.</p>
+ <div id="sqArea"></div></div>${foot(cur,false)}`};
+I.sort=()=>sqNext();
+function sqNext(){const a=document.getElementById('sqArea');if(!a)return;
+ if(sq>=SQ.length){clearInterval(sqTimer);a.innerHTML=`<div class="qcard">You sorted ${sqScore} of ${SQ.length} correctly! ${sqScore>=5?'&#127881;':'&#128170;'}</div>${coach(sqScore>=5?'Great ear for open questions. Those are your best tool in the <b>Ask</b> step.':'Tip: open questions usually start with <b>What, How, Tell me</b>. Want another try?')}<button class="btn ghost" onclick="show(cur)">Play again</button>`;document.getElementById('nextBtn').disabled=false;return}
+ a.innerHTML=`<div class="timer"><i id="sqT"></i></div><div class="qcard">"${SQ[sq][0]}"</div><div class="sortbtns"><button class="btn" onclick="sqAns('open')">Open</button><button class="btn ghost" onclick="sqAns('closed')">Closed</button></div><div class="fb" id="sqFb"></div><p class="note" style="text-align:center;margin-top:8px">Question ${sq+1} of ${SQ.length}</p>`;
+ let t=8;clearInterval(sqTimer);sqTimer=setInterval(()=>{t-=.1;const b=document.getElementById('sqT');if(!b){clearInterval(sqTimer);return}b.style.width=(t/8*100)+'%';if(t<=0){clearInterval(sqTimer);sqAns(null)}},100)}
+function sqAns(v){clearInterval(sqTimer);const ok=v===SQ[sq][1];const fb=document.getElementById('sqFb');
+ document.querySelectorAll('.sortbtns .btn').forEach(b=>b.disabled=true);
+ if(ok){sqScore++;addPts(5)}fb.className='fb '+(ok?'ok':'no');fb.textContent=ok?'Correct!':(v===null?'Time\'s up! ':'Not quite. ')+'That one is '+SQ[sq][1]+'.';
+ sq++;setTimeout(sqNext,1100)}
+
+const ITEMS=[['&#129532;','Deck cleaner',1],['&#127912;','Deck stain',1],['&#129529;','Stain applicator pad',1],['&#128998;','Painter\'s tape',1],['&#128737;&#65039;','Drop cloth',1],['&#129508;','Work gloves',1],['&#128161;','Light bulbs',0],['&#129521;','Drywall mud',0],['&#128295;','PVC cement',0],['&#129716;','Potting soil',0]];
+let cart=new Set(),cartChecked=false;
+R.cart=()=>{cart=new Set();cartChecked=false;return `<div class="body"><div class="eyebrow">Module 5 · Game: Advise</div><h2>Build Marcus's cart</h2>
+ <div style="display:flex;gap:14px;align-items:center">${CH.marcus(90)}<div class="say" style="flex:1"><div class="who">Marcus</div>"My deck is 8 years old, kind of gray, and there's some peeling. I want to re-stain it this weekend."</div></div>
+ <p>Tap every item Marcus needs to <b>finish the project</b>. Remember: Prep &rarr; Product &rarr; Tools &rarr; Protection.</p>
+ <div class="shelf" id="shelf">${ITEMS.map((it,i)=>`<button class="item" data-i="${i}" onclick="toggleItem(${i},this)"><span class="ic">${it[0]}</span>${it[1]}</button>`).join('')}</div>
+ <div class="cartbar">&#128722; <b id="cartN">0 items</b> in cart <span style="flex:1"></span><button class="btn" onclick="checkCart()">Check my cart</button></div>
+ <div id="cartFb"></div></div>${foot(cur,false)}`};
+function toggleItem(i,el){if(cartChecked)return;cart.has(i)?cart.delete(i):cart.add(i);el.classList.toggle('in');document.getElementById('cartN').textContent=cart.size+' item'+(cart.size===1?'':'s')}
+function checkCart(){cartChecked=true;let right=0,wrong=0,missed=0;
+ document.querySelectorAll('#shelf .item').forEach(el=>{const i=+el.dataset.i,need=ITEMS[i][2],inC=cart.has(i);el.classList.remove('in');
+  if(need&&inC){el.classList.add('right');right++}else if(!need&&inC){el.classList.add('wrong');wrong++}else if(need&&!inC){el.classList.add('missed');missed++}});
+ addPts(right*3);
+ document.getElementById('cartFb').innerHTML=coach(`You got <b>${right} of 6</b> project items${wrong?`, plus ${wrong} he doesn't need`:''}. ${missed?`Dashed boxes are what he'd come back for. `:(wrong?'You found every project item! ':'Perfect cart! ')}<b>Deck cleaner</b> is the one most people miss. Gray, peeling wood needs prep, or the new stain won't stick.`)+`<button class="btn ghost" onclick="show(cur)">Try again</button>`;
+ document.getElementById('nextBtn').disabled=false}
+
+const SC={
+ s1:{who:'Narrator',t:'Marcus is standing in the paint aisle, staring at 40 cans of deck stain. He looks unsure.',o:[
+  ['"Hi there! What project are you working on today?"',2,'s2','Great Approach: friendly, open and about the project.'],
+  ['Keep stocking the shelf. He\'ll ask if he needs help.',-1,'s1b','Most customers won\'t ask. Marcus almost walked out.'],
+  ['"Stain\'s on sale this week. It\'s all right there."',0,'s2','Friendly, but it\'s about the product, not his project.']]},
+ s1b:{who:'Narrator',t:'Marcus sighs and starts to leave. You catch him at the end of the aisle.',o:[['"Sorry to keep you waiting! What are you working on?"',1,'s2','Good recovery. Always better to approach first.']]},
+ s2:{who:'Marcus',t:'"Re-staining my deck. I just need a gallon of stain."',o:[
+  ['"Nice! How big is the deck, and what does the wood look like right now?"',2,'s3','Two open questions. Now you know the real project.'],
+  ['Hand him the best-seller: "This one\'s great!"',-1,'s3','He may buy the wrong amount or skip the prep he needs.'],
+  ['"Okay! Do you need anything else?"',0,'s3','A closed question usually gets "Nope, I\'m good."']]},
+ s3:{who:'Marcus',t:'"About 300 square feet. It\'s 8 years old, kind of gray, and peeling in spots."',o:[
+  ['"Gray and peeling means it needs cleaning first so the stain sticks. You\'ll want a deck cleaner, 2 gallons of stain for 300 sq. ft., an applicator pad, tape and gloves."',2,'s4','That\'s Advise done right: Prep → Product → Tools → Protection.'],
+  ['"Gray is normal. Just put the stain right on."',-1,'s4','Skipping prep leads to peeling, an unhappy customer and a return.'],
+  ['"You\'ll want this stain and a good brush."',0,'s4','Better, but he\'s still missing the prep and protection items.']]},
+ s4:{who:'Marcus',t:'"Wow, I had no idea. Where do I find the cleaner?"',o:[
+  ['"Let me walk you over. A pressure washer rental would speed this up, too. Want me to check if one\'s available today?"',2,'end','Walking him there and offering a service is the Assist step.'],
+  ['"Aisle 24, left side, bottom shelf."',0,'end','Accurate, but walking him there builds trust and catches anything else.'],
+  ['"Good luck with it!"',-1,'end','He\'s still confused and may leave without the cleaner.']]}
+};
+let sat=4,path=[];
+R.scen=()=>{sat=4;path=[];return `<div class="body"><div class="eyebrow">Module 6 · Branching scenario</div><h2>Help Marcus finish his deck</h2>
+ <div class="meter" style="margin:8px 0 12px"><span>&#128578; Customer confidence</span><div class="bar"><i id="satBar"></i></div><span id="satTxt">50%</span></div>
+ <div class="scene"><div class="stage"><div class="shelfbg"></div><div style="position:relative">${CH.rosa(120)}</div><div style="position:relative">${CH.marcus(120)}</div></div><div id="scBox"></div></div></div>${foot(cur,false)}`};
+I.scen=()=>scGo('s1');
+function scGo(k){const box=document.getElementById('scBox');
+ if(k==='end'){const pct=Math.round(sat/12*100);const great=sat>=10,ok=sat>=6;
+  box.innerHTML=`<div class="say"><div class="who">Result</div><b style="font-size:18px">${great?'&#127881; Project complete! Marcus left with everything he needed.':ok?'&#128077; Marcus got most of what he needed.':'&#128533; Marcus left with stain only. He might be back with a return.'}</b><p style="margin:8px 0 0">${great?'He told the cashier, "Your associate saved my weekend."':ok?'Look back at which A could have been stronger.':'Try again and focus on Ask and Advise.'}</p></div>
+  <div class="say"><div class="who">Your path</div><ol style="margin:4px 0 0;padding-left:20px">${path.map(p=>`<li>${p}</li>`).join('')}</ol></div><button class="btn ghost" onclick="show(cur)">Replay scenario</button>`;
+  if(great)confetti();document.getElementById('nextBtn').disabled=false;return}
+ const n=SC[k];box.innerHTML=`<div class="say"><div class="who">${n.who}</div>${n.t}</div><div class="opts">${n.o.map((o,i)=>`<button class="opt" onclick="scPick('${k}',${i})">${o[0]}</button>`).join('')}</div><div id="scFb"></div>`}
+function scPick(k,i){const o=SC[k].o[i];sat=Math.max(0,Math.min(12,sat+o[1]*1.5+ (o[1]>0?.5:0)));
+ const pct=Math.round(sat/12*100);document.getElementById('satBar').style.width=pct+'%';document.getElementById('satTxt').textContent=pct+'%';
+ if(o[1]>0)addPts(o[1]*5);path.push((o[1]===2?'&#9989; ':o[1]>0?'&#9989; ':o[1]===0?'&#9888;&#65039; ':'&#10060; ')+o[3]);
+ document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+ document.getElementById('scFb').innerHTML=coach((o[1]>0?'<b>Nice!</b> ':o[1]===0?'<b>Okay…</b> ':'<b>Hmm.</b> ')+o[3]+`<div style="margin-top:8px"><button class="btn" onclick="scGo('${o[2]}')">Continue &rarr;</button></div>`)}
+
+const QZ=[
+ ['A customer is looking at deck stain and seems unsure. What should you do first?',['Wait for them to ask for help','Greet them and ask what project they\'re working on','Tell them which stain is on sale','Page a department supervisor'],1,'Approach first, and make it about their project.'],
+ ['Which of these is an OPEN question?',['Do you need anything else?','Is this for outside?','What does the wood look like right now?','Did you find everything okay?'],2,'Open questions start with what, how or tell me, and get the customer talking.'],
+ ['In the Advise step, you should…',['Recommend only the item they asked for','Recommend everything needed to finish the project, including prep and tools','Recommend the most expensive option','Send them to the Pro Desk'],1,'Think Prep → Product → Tools → Protection.'],
+ ['A customer asks where the deck cleaner is. What\'s the best Assist move?',['Tell them the aisle number','Walk them there and offer a helpful service, like a tool rental','Tell them to check the app','Say "Good luck!"'],1,'Walk, don\'t point, and offer a service that helps them finish.'],
+ ['Marcus says, "I just need a gallon of stain." What\'s your best response?',['"Here you go!"','"Do you need anything else?"','"How big is the deck, and what condition is the wood in?"','"We\'re out of that one."'],2,'Asking about size and condition uncovers the full project and the right amount.']];
+let qi=0,qs=0,qPicked=null;
+R.quiz=()=>{qi=0;qs=0;return `<div class="body"><div class="eyebrow">Module 7 · Knowledge check</div><h2>Show what you know</h2><p class="note">5 questions · Score 80% or higher to earn your Aisle Ace badge.</p><div id="qBox"></div></div>${foot(cur,false)}`};
+I.quiz=()=>qRender();
+function qRender(){const b=document.getElementById('qBox');
+ if(qi>=QZ.length){const pct=Math.round(qs/QZ.length*100),pass=pct>=80;window.quizPct=pct;
+  const pre=window.prePct;
+  b.innerHTML=`<div class="qcard" style="border-color:${pass?'var(--good)':'var(--bad)'};background:${pass?'var(--good-l)':'var(--bad-l)'}">Your score: ${pct}% ${pass?'&#127881; You passed!':'Almost! You need 80% to pass.'}${pre!=null?`<div style="font-size:15px;font-weight:600;margin-top:6px">Before the course: ${pre}% &rarr; Now: ${pct}% (${pct-pre>=0?'+':''}${pct-pre} pts)</div>`:''}</div>`+
+   (pass?coach("You're officially ready to <b>Own the Aisle</b>. One last thing: how confident do you feel now?")+`<b>How confident do you feel helping a customer plan a whole project?</b>${confRow('postConf')}<div id="confCmp" class="fb"></div>`:'<button class="btn" onclick="show(cur)">Retake the check</button>');
+  if(pass){addPts(20,'Passed!');confetti()}return}
+
+ const q=QZ[qi];qPicked=null;b.innerHTML=`<div class="prog" style="margin:10px 0"><i style="width:${qi/QZ.length*100}%"></i></div><h3>${qi+1}. ${q[0]}</h3>${q[1].map((o,i)=>`<button class="qopt" onclick="qSel(${i},this)">${o}</button>`).join('')}<div style="margin-top:10px"><button class="btn" id="qSubmit" disabled onclick="qSubmit()">Submit</button></div><div class="fb" id="qFb"></div>`}
+function qSel(i,el){qPicked=i;document.querySelectorAll('.qopt').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');document.getElementById('qSubmit').disabled=false}
+function qSubmit(){const q=QZ[qi],ok=qPicked===q[2];const opts=document.querySelectorAll('.qopt');opts.forEach((o,i)=>{o.disabled=true;if(i===q[2])o.classList.add('right');else if(i===qPicked)o.classList.add('wrong')});
+ if(ok){qs++;addPts(5)}const fb=document.getElementById('qFb');fb.className='fb '+(ok?'ok':'no');fb.innerHTML=(ok?'Correct! ':'Not quite. ')+q[3];
+ const s=document.getElementById('qSubmit');s.textContent=qi<QZ.length-1?'Next question →':'See my score';s.onclick=()=>{qi++;qRender()}}
+
+R.cert=()=>`<div class="body"><div class="eyebrow">You did it!</div><h2>Your Aisle Ace certificate</h2>
+ <div style="max-width:340px;margin:8px 0 14px"><input type="text" id="nm" placeholder="Type your name for the certificate" oninput="document.getElementById('certNm').textContent=this.value||'Your Name'"></div>
+ <div id="printArea"><div class="cert">
+  <svg class="badge" viewBox="0 0 100 100"><polygon points="50,4 61,30 90,30 66,48 75,76 50,59 25,76 34,48 10,30 39,30" fill="#F96302"/><circle cx="50" cy="44" r="14" fill="#fff"/><text x="50" y="49" text-anchor="middle" font-size="13" font-weight="800" fill="#C94F00">A+</text></svg>
+  <div class="eyebrow">Certificate of completion</div><h2>Aisle Ace</h2><p>This certifies that</p><div class="nm" id="certNm">Your Name</div>
+  <p style="margin-top:12px">completed <b>Own the Aisle: Help Every Customer Finish the Project</b><br>with a score of <b id="certSc">${window.quizPct||'—'}%</b> and <b>${pts}</b> points.</p></div>
+  <h3 style="margin-top:22px">Your pocket job aid</h3>
+  <div class="jobaid"><div class="h">Own the Aisle · The 4 A's</div><ol>
+   <li><b>Approach:</b> Within 10 ft. "What project are you working on?"</li>
+   <li><b>Ask:</b> 2+ open questions. Size? Condition? Timeline?</li>
+   <li><b>Advise:</b> Prep &rarr; Product &rarr; Tools &rarr; Protection.</li>
+   <li><b>Assist:</b> Walk, don't point. Offer a service. Thank them.</li></ol></div></div>
+ <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn" onclick="window.print()">&#128424; Print certificate &amp; job aid</button><button class="btn ghost" onclick="complete(cur);go('eval')">Give feedback (Level 1 survey) &rarr;</button></div>
+ </div>${foot(cur)}`;
+I.cert=()=>{complete(cur)};
+
+/* --- confidence rating --- */
+const CONF=[[1,'Not yet'],[2,'A little'],[3,'Somewhat'],[4,'Confident'],[5,'Very']];
+function confRow(id){return `<div class="conf" id="${id}">${CONF.map(c=>`<button onclick="pickConf('${id}',${c[0]},this)">${c[0]}<small>${c[1]}</small></button>`).join('')}</div>`}
+function pickConf(id,n,el){document.querySelectorAll('#'+id+' button').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');
+ if(id==='preConf'){window.preConf=n;const fb=document.getElementById('preDone');fb.className='fb ok';fb.innerHTML=`Baseline saved: ${window.prePct}% on the check, confidence ${n}/5. Let's see how much that grows!`;document.getElementById('nextBtn').disabled=false}
+ else{window.postConf=n;const fb=document.getElementById('confCmp');fb.className='fb ok';fb.innerHTML=window.preConf?`Confidence: ${window.preConf}/5 before &rarr; ${n}/5 now. Grab your badge on the next screen!`:`Confidence: ${n}/5. Grab your badge on the next screen!`;document.getElementById('nextBtn').disabled=false}}
+
+/* --- pre-check (baseline) --- */
+let pi=0,ps=0;
+R.pre=()=>{pi=0;ps=0;return `<div class="body"><div class="eyebrow">Before you start · Quick check</div><h2>What do you already know?</h2>
+ ${coach("5 quick questions, no pressure. This is your <b>starting point</b>, so we can show how much you grow. You'll see the answers at the end of the course.")}
+ <div id="preBox"></div></div>${foot(cur,false)}`};
+I.pre=()=>preRender();
+function preRender(){const b=document.getElementById('preBox');
+ if(pi>=QZ.length){window.prePct=Math.round(ps/QZ.length*100);
+  b.innerHTML=`<h3>Last one: how confident do you feel helping a customer plan a whole project?</h3>${confRow('preConf')}<div class="fb" id="preDone"></div>`;return}
+ const q=QZ[pi];b.innerHTML=`<div class="prog" style="margin:10px 0"><i style="width:${pi/QZ.length*100}%"></i></div><p class="note">Question ${pi+1} of ${QZ.length}</p><h3>${q[0]}</h3>${q[1].map((o,i)=>`<button class="qopt" onclick="preAns(${i})">${o}</button>`).join('')}`}
+function preAns(i){if(i===QZ[pi][2])ps++;pi++;preRender()}
+
+/* --- AI practice coach --- */
+const AIT=[
+ {cust:"Hi, where's your paint? I'm redoing my bathroom.",
+  crit:[['Approach','Friendly, helpful opener',/\b(hi|hello|hey|happy|glad|sure|absolutely|of course|great|welcome|love to|let's)\b/i],
+        ['Ask','Asked an open question',/\b(what|how|which|tell me|when|where)\b[^?]*\?/i],
+        ['Project focus','Asked about the project, not just the product',/(project|room|bathroom|size|big|walls?|condition|look|shower|ceiling|colou?r|peel|damage|space)/i]],
+  model:"\"Happy to help! What's going on with the bathroom: just a new color, or fixing some damage too? And how big is the room?\""},
+ {cust:"It's small, about 5 by 8. There's some peeling and a little mildew by the shower.",
+  crit:[['Advise: prep','Recommended prep for peeling and mildew',/(mildew|clean|scrape|scraper|patch|sand|primer|prime|wash)/i],
+        ['Advise: product','Recommended the right product',/(semi-gloss|satin|bathroom paint|mildew.?resistant|moisture|paint)/i],
+        ['Advise: tools','Recommended tools or protection',/(brush|roller|tape|tray|drop cloth|gloves|sandpaper|cover)/i],
+        ['Assist','Offered to walk her there or help further',/(show you|walk|let me|i'll take|i will take|come with|follow me|grab|i can get|take you)/i]],
+  model:"\"Since there's peeling and mildew, you'll want a mildew cleaner and a scraper first, then a primer, and a mildew-resistant bathroom paint in satin or semi-gloss. Add tape, a small roller and an angled brush. Let me walk you over and we'll grab it all.\""}];
+let ait=0,aiScore=0;
+R.ai=()=>{ait=0;aiScore=0;return `<div class="body"><div class="eyebrow">Module 4 · AI Practice Coach</div><h2>Practice the conversation with an AI coach</h2>
+ <div class="tag-illus">&#129302; Prototype: in the live course this connects to a company-approved AI tool (e.g., Copilot). This demo scores replies with scripted rules.</div>
+ <p style="margin-top:10px">Type what you'd <b>actually say</b> to Dana. The coach checks your reply against the 4 A's and gives instant feedback.</p>
+ <div style="display:flex;gap:12px;align-items:flex-end;margin:6px 0">${CH.dana(90)}<span class="note">Dana · repainting a bathroom</span></div>
+ <div class="aichat" id="aiChat"></div>
+ <div class="ai-in" id="aiIn"><textarea id="aiTxt" rows="2" placeholder="Type your reply to Dana…" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();aiSend()}"></textarea><button class="btn" onclick="aiSend()">Send</button></div>
+ <p class="note" style="margin-top:6px">Stuck? <a href="#" onclick="aiHint();return false" style="color:var(--orange-d)">Get a hint</a></p>
+ </div>${foot(cur,false)}`};
+I.ai=()=>aiCust();
+function aiAdd(html,cls){const c=document.getElementById('aiChat');const d=document.createElement('div');d.className='ai-row '+(cls||'');d.innerHTML=html;c.appendChild(d);return d}
+function aiCust(){aiAdd(`<div class="ai-b"><b>Dana:</b> ${AIT[ait].cust}</div>`)}
+function aiHint(){toast(ait===0?'Hint: greet her, then ask about the project':'Hint: Prep → Product → Tools → then walk her there')}
+function aiSend(){const ta=document.getElementById('aiTxt');const v=ta.value.trim();if(!v)return;ta.value='';
+ aiAdd(`<div class="ai-b">${v.replace(/</g,'&lt;')}</div>`,'me');const th=aiAdd(`<div class="ai-b coachb"><span class="typing"><span></span><span></span><span></span></span> AI coach is reviewing…</div>`);
+ document.getElementById('aiIn').style.display='none';
+ setTimeout(()=>{const t=AIT[ait];let hit=0;const rows=t.crit.map(c=>{const ok=c[2].test(v);if(ok)hit++;return `<div class="crit">${ok?'&#9989;':'&#11036;'} <span><b>${c[0]}:</b> ${c[1]}</span></div>`}).join('');
+  aiScore+=hit;addPts(hit*4);const all=hit===t.crit.length;
+  th.innerHTML=`<div class="ai-b coachb"><b>&#129302; AI coach:</b> ${all?'Excellent, you hit every point!':hit?`Good start: ${hit} of ${t.crit.length}.`:"Let's build on that."}${rows}<div class="model"><b>Try it like this:</b> ${t.model}</div><div style="margin-top:8px"><button class="btn" onclick="aiNext()">${ait<AIT.length-1?'Continue the conversation →':'Finish practice'}</button></div></div>`;
+  th.scrollIntoView({behavior:'smooth',block:'nearest'})},1100)}
+function aiNext(){ait++;document.querySelectorAll('#aiChat .btn').forEach(b=>b.remove());
+ if(ait<AIT.length){document.getElementById('aiIn').style.display='flex';aiCust();return}
+ const tot=AIT.reduce((a,t)=>a+t.crit.length,0);aiAdd(`<div class="ai-b coachb"><b>&#129302; Practice summary:</b> you hit ${aiScore} of ${tot} coaching points. ${aiScore>=5?"You're ready for a live customer!":'Replay to practice again. Real reps build confidence.'}<div style="margin-top:8px"><button class="btn ghost" onclick="show(cur)">Practice again</button></div></div>`);
+ document.getElementById('nextBtn').disabled=false}
+
+toc();show(0);
+
+/* ---------- EVAL: survey + observation ---------- */
+const SVQ=['The course was relevant to my job.','I can use the 4 A\'s on my next shift.','The scenario felt like real customer situations.','The course was easy to use on my device.','I would recommend this course to a coworker.'];
+const sv={};
+document.getElementById('surveyQs').innerHTML=SVQ.map((q,i)=>`<div class="qrow"><span>${q}</span><div class="stars" data-q="${i}">${[1,2,3,4,5].map(n=>`<button type="button" aria-label="${n} stars" onclick="star(${i},${n})">&#9733;</button>`).join('')}</div></div>`).join('');
+function star(i,n){sv[i]=n;document.querySelectorAll(`.stars[data-q="${i}"] button`).forEach((b,k)=>b.classList.toggle('on',k<n))}
+function submitSurvey(e){e.preventDefault();const fb=document.getElementById('surveyFb');
+ if(Object.keys(sv).length<SVQ.length){fb.className='fb no';fb.textContent='Please rate all 5 statements.';return false}
+ const avg=(Object.values(sv).reduce((a,b)=>a+b,0)/SVQ.length).toFixed(1);
+ fb.className='fb ok';fb.textContent=`Thanks! Your average rating: ${avg}/5. Responses roll into the Results dashboard (Level 1).`;addPts(10,'Feedback sent');return false}
+const OBS=['Approached the customer within 10 feet','Used a project-focused greeting','Asked 2+ open questions','Recommended prep items (not just the product)','Recommended tools or protection items','Walked the customer to the product','Offered a service (rental, delivery, checklist)','Thanked the customer'];
+document.getElementById('obsList').innerHTML=OBS.map((o,i)=>`<label class="chk"><input type="checkbox" onchange="obsUp()">${o}</label>`).join('');
+function obsUp(){const c=document.querySelectorAll('#obsList input:checked').length,p=Math.round(c/OBS.length*100);
+ document.getElementById('obsBar').style.width=p+'%';document.getElementById('obsPct').textContent=p+'%';
+ document.getElementById('obsCoach').textContent=c===0?'':p>=75?'Strong: recognize this associate in the next huddle.':'Coach on the missing steps, using the pocket job aid.'}
+
+/* ---------- RESULTS CHARTS ---------- */
+let drawn=false;
+function drawCharts(){if(drawn)return;drawn=true;
+ const D1=[['Approach',64,92],['Ask',48,86],['Advise',52,88],['Assist',61,90]];
+ const s=document.getElementById('chart1'),W=460,H=260,m={l:36,r:10,t:16,b:30},cw=W-m.l-m.r,ch=H-m.t-m.b;
+ let g='';[0,25,50,75,100].forEach(v=>{const y=m.t+ch-(v/100)*ch;g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${y}" y2="${y}" stroke="#ECE8E4"/><text x="${m.l-6}" y="${y+4}" font-size="11" fill="#737373" text-anchor="end">${v}%</text>`});
+ const gw=cw/D1.length,bw=Math.min(34,gw/2-6);
+ D1.forEach((d,i)=>{const cx=m.l+gw*i+gw/2;[[d[1],'#2F6FB8','Before'],[d[2],'#E85A00','After']].forEach((b,k)=>{const h=b[0]/100*ch,x=cx+(k?1:-1-bw/1)-(k?0:0)+(k?1:-bw-1)+(k?0:1),y=m.t+ch-h;
+   const xx=k?cx+1:cx-bw-1;g+=`<path d="M${xx},${m.t+ch} V${y+4} Q${xx},${y} ${xx+4},${y} H${xx+bw-4} Q${xx+bw},${y} ${xx+bw},${y+4} V${m.t+ch}Z" fill="${b[1]}" data-t="${d[0]} · ${b[2]}: ${b[0]}%"/>`});
+  g+=`<text x="${cx-bw/2-1}" y="${m.t+ch-d[1]/100*ch-5}" font-size="11" text-anchor="middle" fill="#4A4A4A">${d[1]}</text><text x="${cx+bw/2+1}" y="${m.t+ch-d[2]/100*ch-5}" font-size="11" text-anchor="middle" fill="#1E1E1E" font-weight="700">${d[2]}</text><text x="${cx}" y="${H-10}" font-size="12" text-anchor="middle" fill="#4A4A4A">${d[0]}</text>`});
+ g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${m.t+ch}" y2="${m.t+ch}" stroke="#BDB6AF"/>`;s.innerHTML=g;
+ document.getElementById('t1').innerHTML='<tr><th>Objective</th><th>Before</th><th>After</th></tr>'+D1.map(d=>`<tr><td>${d[0]}</td><td>${d[1]}%</td><td>${d[2]}%</td></tr>`).join('');
+ hover('chart1','tip1','c1');
+ const D2=[['Relevant to my job',4.7],['Can use on next shift',4.7],['Scenario felt real',4.6],['Easy on my device',4.4],['Would recommend',4.6]];
+ const s2=document.getElementById('chart2'),ml=150,mr=40,rw=W-ml-mr,rh=(H-20)/D2.length;let g2='';
+ [0,1,2,3,4,5].forEach(v=>{const x=ml+v/5*rw;g2+=`<line x1="${x}" x2="${x}" y1="6" y2="${H-18}" stroke="#ECE8E4"/><text x="${x}" y="${H-4}" font-size="11" fill="#737373" text-anchor="middle">${v}</text>`});
+ D2.forEach((d,i)=>{const y=10+i*rh,bh=Math.min(22,rh-12),w=d[1]/5*rw;
+  g2+=`<text x="${ml-8}" y="${y+bh/2+4}" font-size="12" fill="#4A4A4A" text-anchor="end">${d[0]}</text><path d="M${ml},${y} H${ml+w-4} Q${ml+w},${y} ${ml+w},${y+4} V${y+bh-4} Q${ml+w},${y+bh} ${ml+w-4},${y+bh} H${ml}Z" fill="#E85A00" data-t="${d[0]}: ${d[1]} / 5"/><text x="${ml+w+6}" y="${y+bh/2+4}" font-size="12" fill="#1E1E1E" font-weight="700">${d[1]}</text>`});
+ s2.innerHTML=g2;document.getElementById('t2').innerHTML='<tr><th>Survey item</th><th>Avg. (of 5)</th></tr>'+D2.map(d=>`<tr><td>${d[0]}</td><td>${d[1]}</td></tr>`).join('');
+ hover('chart2','tip2','c2')}
+function hover(sid,tid,bid){const s=document.getElementById(sid),tip=document.getElementById(tid),box=document.getElementById(bid);
+ s.querySelectorAll('path[data-t]').forEach(p=>{p.style.cursor='pointer';
+  p.addEventListener('mousemove',e=>{const r=box.getBoundingClientRect();tip.textContent=p.dataset.t;tip.style.left=(e.clientX-r.left+12)+'px';tip.style.top=(e.clientY-r.top-30)+'px';tip.style.opacity=1;p.setAttribute('opacity',.85)});
+  p.addEventListener('mouseleave',()=>{tip.style.opacity=0;p.removeAttribute('opacity')})})}
+
+/* ---------- confetti ---------- */
+function confetti(){const c=document.getElementById('confetti'),x=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;
+ const P=Array.from({length:120},()=>({x:Math.random()*c.width,y:-20-Math.random()*c.height*.5,r:4+Math.random()*5,vy:2+Math.random()*3,vx:-1.5+Math.random()*3,c:['#F96302','#FFB37F','#1E1E1E','#FFFFFF','#C94F00'][Math.floor(Math.random()*5)],a:Math.random()*6}));
+ let f=0;(function tick(){x.clearRect(0,0,c.width,c.height);P.forEach(p=>{p.y+=p.vy;p.x+=p.vx;p.a+=.1;x.save();x.translate(p.x,p.y);x.rotate(p.a);x.fillStyle=p.c;x.fillRect(-p.r/2,-p.r/2,p.r,p.r*1.6);x.restore()});if(++f<160)requestAnimationFrame(tick);else x.clearRect(0,0,c.width,c.height)})()}
+</script>
+</body>
+</html>
